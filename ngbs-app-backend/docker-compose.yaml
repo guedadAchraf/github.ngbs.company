@@ -1,0 +1,34 @@
+version: '3.8'
+
+services:
+  # Spring Boot backend service
+  ngbs-app-backend:
+    image: guedadachraf/ngbs-app-backend:tag01
+
+    ports:
+      - "8080:8080"
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:mysql://mysql:3306/productdb
+      SPRING_DATASOURCE_USERNAME: achraf
+      SPRING_DATASOURCE_PASSWORD: achraf123
+    depends_on:
+      - mysql
+
+  # MySQL database service
+  mysql:
+    image: mysql:8.0
+    container_name: mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: achraf123  # Set root password for MySQL
+      MYSQL_USER: achraf  # Set MySQL username
+      MYSQL_PASSWORD: achraf123  # Set MySQL user password
+      MYSQL_DATABASE: productdb  # Database name
+    ports:
+      - "3306:3306"  # Expose MySQL port for local access (optional)
+    volumes:
+      - mysql-data:/var/lib/mysql  # Persistent storage for MySQL data
+
+# Volumes for persistent data
+volumes:
+  mysql-data:
+    driver: local
